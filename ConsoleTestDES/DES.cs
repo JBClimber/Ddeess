@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ namespace ConsoleTestDES
     public partial class DES : Form
     {
         private bool triple;    // singel of triple pass DES
+        private bool decrypt;
 
         public DES()
         {
@@ -49,10 +51,12 @@ namespace ConsoleTestDES
         private void FullResetDES()
         {
             this.triple = false;
+            this.decrypt = false;
             menuTypeTripleSingle.Text = "Triple";
-            this.textKey.Text = "";
-            this.textMsg.Text = "";
-            this.textEncDec.Text = "";
+            textKey.Text = "";
+            textMsg.Text = "";
+            textEncDec.Text = "";
+            Text = "DES encrypt";
             errorKey.Clear();
             errorMsg.Clear();
         }
@@ -71,33 +75,28 @@ namespace ConsoleTestDES
         {
             if (isKeyBoxValidated(this.textKey) & isMsgBoxValidated(this.textMsg))
             {
-                string dec = RunDES(this.textKey.Text, this.textMsg.Text, this.triple);
+                string dec = RunDES(this.textKey.Text, this.textMsg.Text);
                 this.textEncDec.Text = dec;
             }
         }
 
-        public string RunDES(string key, string msg, bool triple)
+        public string RunDES(string key, string msg)
         {
-            /*string text = "Your";     // string to hex string
-            char[] chars = text.ToCharArray();
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (char c in chars)
-            {
-                stringBuilder.Append(((Int16)c).ToString("x"));
-            }
-            String textAsHex = stringBuilder.ToString();
-            Console.WriteLine(textAsHex);
-            return textAsHex;*/
-
             string encMsg = "";
+            DESCode.RunDES des;
 
-            DESCode.RunDES des = new DESCode.RunDES(key, msg);
 
-            //encMsg += des.GetStringKey() + "\n";
-            //encMsg += des.GetStringMsg();
+            if (!this.decrypt && !this.triple)      // encrypts single
+            {   
+                des = new DESCode.RunDES(key.ToUpper(), msg);
+                encMsg += des.RunEncrypt();
+            }
+            else if(this.decrypt && !this.triple)   // decrypts single
+            {
+                des = new DESCode.RunDES(key, msg);
+                encMsg += des.RunDecrypt();
+            }
 
-            ///Console.WriteLine("KEY: " + des.GetBinaryStringKey());
-            //Console.WriteLine("MSG: " + des.GetBinaryStringMsg());
             Console.Read();
 
             return encMsg;
@@ -105,15 +104,16 @@ namespace ConsoleTestDES
 
         private bool isKeyBoxValidated(TextBox key)
         {   // validates textBox key for length of 16 characters
-
-            if (key.Text.Length != 16)  // length must be 16
+            
+            if ( !Regex.IsMatch(key.Text, "^[0-9A-Fa-f]{16}$"))  // length must be 16
             {
-                errorKey.SetError(key,"must have 16\ncharacters !!!");
+                errorKey.SetError(key,"must have 16\nHEX numbers !!!");
+                key.BackColor = Color.Red;
                 return false;
             }
             else
             {
-                key.BackColor = Color.Green;
+                key.BackColor = Color.White;
                 errorKey.Clear();
                 return true;
             }
@@ -152,6 +152,28 @@ namespace ConsoleTestDES
         private void textMsg_Leave(object sender, EventArgs e)
         {
             isMsgBoxValidated(this.textMsg);
+        }
+
+        private void menuFileDecrypt_Click(object sender, EventArgs e)
+        {
+            if (this.menuFileDecrypt.Text == "Encrypt")
+            {
+                decrypt = false;
+                menuFileDecrypt.Text = "Decrypt";
+                btEncDec.Text = "Encrypt";
+                labelEncDec.Text = "enc:";
+                this.Text = "DES encrypt";
+
+            }
+            else if(this.menuFileDecrypt.Text == "Decrypt")
+            {
+                decrypt = true;
+                menuFileDecrypt.Text = "Encrypt";
+                btEncDec.Text = "Decrypt";
+                labelEncDec.Text = "dec:";
+                this.Text = "DES decrypt";
+            }
+
         }
     }
 }

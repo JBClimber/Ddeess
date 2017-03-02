@@ -11,24 +11,57 @@ namespace ConsoleTestDES.DESCode
     {
         private KeyGenerators kg;
         private MsgGenerator mg;
+        private Functions f;
 
         public RunDES(string key, string msg)
-        {
-            this.kg = new KeyGenerators( key );
-            this.mg = new MsgGenerator(msg);
+        {   // constructor that encrypts or decrypts (single)
 
-            RunEncrypt();
+            this.kg = new KeyGenerators( key );
+            this.mg = new MsgGenerator(msg);        // initial permutation happens in the MsgGenerator constructor
+            this.f = new Functions();
+            
         }
 
         public string RunEncrypt()
         {
-            Functions f = new DESCode.Functions();
-
             string output = "";
+            bool[] fcn;     // result for the f function
+            bool[] lXORfcn; // temporary storage for the Lside and Rside swap
 
-            bool[] Ei = f.Expander(mg.GetRight());
+            for (int i=0; i<=15; i++)
+            {
+                fcn = f.fFunction (mg.GetRight(), kg.GetKKeyNumber(i+1) );
+                lXORfcn = mg.L_XOR_f( fcn );
+                mg.SetLeft( mg.GetRight() );
+                mg.SetRight( lXORfcn );
+            }
 
-            bool[] xor = f.ERi_XOR_Ki(Ei, kg.GetKKeyNumber(1));
+            mg.IPinvPermutation(mg.RconcatL());
+
+            output += mg.GetMsgAsText();
+            Console.WriteLine("\nEncrypted Hex output is:\n"+output);
+
+            return output;
+        }
+
+        public string RunDecrypt()
+        {
+            string output = "";
+            bool[] fcn;     // result for the f function
+            bool[] lXORfcn; // temporary storage for the Lside and Rside swap
+
+            for (int i = 0; i <= 15; i++)
+            {
+                fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(16-i));
+                lXORfcn = mg.L_XOR_f(fcn);
+                mg.SetLeft(mg.GetRight());
+                mg.SetRight(lXORfcn);
+            }
+
+            mg.IPinvPermutation(mg.RconcatL());
+
+            output += mg.GetMsgAsText();
+            Console.WriteLine("\nDecrypted Hex output is:\n" + output);
 
             return output;
         }

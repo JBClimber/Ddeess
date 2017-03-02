@@ -16,7 +16,7 @@ namespace ConsoleTestDES.DESCode
 
         public KeyGenerators(string key)
         {
-            this.bitKey64 = ByteKeyToBitKey (HexStringToByteArray("133457799BBCDFF1"/*Helper.ToHexString(key)*/ ) );
+            this.bitKey64 = ByteKeyToBitKey (HexStringToByteArray(key) );
             this.bitKey56 = BitKey64ToBitKey56(this.bitKey64);
             this.cdKeys = CreateCDKeys(this.bitKey56);
             this.kKeys = CreateKKeys(this.cdKeys);

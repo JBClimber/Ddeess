@@ -86,13 +86,58 @@ namespace ConsoleTestDES.DESCode
             {
                 output += (arr[i]) ? "1" : "0";
 
-                if ((i + 1) % l == 0)
+                if (l != 0 && (i + 1) % l == 0)
                 {
                     output += " ";
                 }
             }
 
             return output;
+        }
+
+        public static bool[] IntToFourBit(int n)
+        {   // takes int between 0 and 15 (inclusive) and 
+            // returns a 4 bit representaion in bool array form
+
+            bool[] b = new bool[4];
+
+            switch (n)
+            {
+                case 0:
+                    return b = new bool[] { false, false, false, false};
+                case 1:
+                    return b = new bool[] { false, false, false, true };
+                case 2:
+                    return b = new bool[] { false, false, true, false };
+                case 3:
+                    return b = new bool[] { false, false, true, true };
+                case 4:
+                    return b = new bool[] { false, true, false, false };
+                case 5:
+                    return b = new bool[] { false, true, false, true };
+                case 6:
+                    return b = new bool[] { false, true, true, false };
+                case 7:
+                    return b = new bool[] { false, true, true, true };
+                case 8:
+                    return b = new bool[] { true, false, false, false };
+                case 9:
+                    return b = new bool[] { true, false, false, true };
+                case 10:
+                    return b = new bool[] { true, false, true, false };
+                case 11:
+                    return b = new bool[] { true, false, true, true };
+                case 12:
+                    return b = new bool[] { true, true, false, false };
+                case 13:
+                    return b = new bool[] { true, true, false, true };
+                case 14:
+                    return b = new bool[] { true, true, true, false };
+                case 15:
+                    return b = new bool[] { true, true, true, true };
+            }
+
+            return b;
         }
     }
 }

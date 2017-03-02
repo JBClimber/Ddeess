@@ -44,6 +44,8 @@
             this.btEncDec = new System.Windows.Forms.Button();
             this.errorKey = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorMsg = new System.Windows.Forms.ErrorProvider(this.components);
+            this.menuFileDecrypt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorKey)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorMsg)).BeginInit();
@@ -95,7 +97,9 @@
             // menuFile
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuFileDecrypt,
             this.menuFileReset,
+            this.toolStripMenuItem1,
             this.menuFileClose});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(37, 20);
@@ -104,14 +108,14 @@
             // menuFileReset
             // 
             this.menuFileReset.Name = "menuFileReset";
-            this.menuFileReset.Size = new System.Drawing.Size(103, 22);
+            this.menuFileReset.Size = new System.Drawing.Size(152, 22);
             this.menuFileReset.Text = "Reset";
             this.menuFileReset.Click += new System.EventHandler(this.menuFileReset_Click);
             // 
             // menuFileClose
             // 
             this.menuFileClose.Name = "menuFileClose";
-            this.menuFileClose.Size = new System.Drawing.Size(103, 22);
+            this.menuFileClose.Size = new System.Drawing.Size(152, 22);
             this.menuFileClose.Text = "Close";
             this.menuFileClose.Click += new System.EventHandler(this.menuFileClose_Click);
             // 
@@ -180,6 +184,18 @@
             // 
             this.errorMsg.ContainerControl = this;
             // 
+            // menuFileDecrypt
+            // 
+            this.menuFileDecrypt.Name = "menuFileDecrypt";
+            this.menuFileDecrypt.Size = new System.Drawing.Size(152, 22);
+            this.menuFileDecrypt.Text = "Decrypt";
+            this.menuFileDecrypt.Click += new System.EventHandler(this.menuFileDecrypt_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            // 
             // DES
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,7 +211,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DES";
-            this.Text = "DES";
+            this.Text = "DES encrypt";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorKey)).EndInit();
@@ -222,6 +238,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuFileReset;
         private System.Windows.Forms.ErrorProvider errorKey;
         private System.Windows.Forms.ErrorProvider errorMsg;
+        private System.Windows.Forms.ToolStripMenuItem menuFileDecrypt;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

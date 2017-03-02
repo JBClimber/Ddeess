@@ -15,18 +15,14 @@ namespace TestDES
 
             string msg = "0123456789ABCDEF";
             string key = "133457799BBCDFF1";
+           string dmsg = "85E813540F0AB405";
 
-            RunDES des = new RunDES(key, msg);
+           string msg2 = "8787878787878787";
+           string key2 = "0E329232EA6D0D73";
+          string dmsg2 = "0000000000000000";
 
+            RunDES des = new RunDES(key, dmsg);    // give hex only for now
 
-
-            /*Console.WriteLine("msg in Hex : "+msg);
-
-            byte[] byteMsg = des.HexStringToByteArray(msg);
-            byte[] byteKey = des.HexStringToByteArray(key);
-
-            Console.WriteLine("msg binary:\n" +des.GetBinaryStringFromByteArray(des.msg));
-            Console.WriteLine("key byteArray:\n" + des.GetBinaryStringFromByteArray(des.key));*/
 
             Console.ReadKey();
         }
