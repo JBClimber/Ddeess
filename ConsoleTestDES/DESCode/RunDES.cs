@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ConsoleTestDES.DESCode
 {
@@ -13,55 +14,141 @@ namespace ConsoleTestDES.DESCode
         private MsgGenerator mg;
         private Functions f;
 
+        private List<string> msgPart;
+
+        public RunDES()
+        {
+            this.kg = null;
+            this.mg = null;
+            this.f = null;
+            msgPart = null;
+        }
+
+
         public RunDES(string key, string msg)
         {   // constructor that encrypts or decrypts (single)
 
             this.kg = new KeyGenerators( key );
-            this.mg = new MsgGenerator(msg);        // initial permutation happens in the MsgGenerator constructor
             this.f = new Functions();
+
+            if (Helper.IsHexString(msg))    // if it is a hex string
+            {
+                if (msg.Length % 2 != 0)
+                {
+                    Console.WriteLine("WARNING !!! odd number of hex's");
+                }
+                
+                msg = Helper.AddPaddingToMsg(msg, 16, "0");     // padding of 16 for hex block
+                this.msgPart = Helper.SplitMsgBySize(msg, 16);
+            }
+            else                            // if not a hex string
+            {
+                msg = Helper.AddPaddingToMsg(msg, 8, "0");      // padding of 8 for character block
+                this.msgPart = Helper.SplitMsgBySize(msg, 8);
+            }
             
+            //this.mg = new MsgGenerator(msg);        // initial permutation happens in the MsgGenerator constructor
+
         }
 
         public string RunEncrypt()
-        {
+        {   // this encryption uses the MsgGenerator and KeyGenerators
+
+            string hexoutput = "";
+            string textoutput = "";
+
+            for (int i=0; i<msgPart.Count; i++) {
+
+                mg = new MsgGenerator(msgPart[i]);
+
+                bool[] fcn;     // result for the f function
+                bool[] lXORfcn; // temporary storage for the Lside and Rside swap
+
+                for (int j = 0; j <= 15; j++)
+                {
+                    fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(j + 1));
+                    lXORfcn = mg.L_XOR_f(fcn);
+                    mg.SetLeft(mg.GetRight());
+                    mg.SetRight(lXORfcn);
+                }
+
+                mg.IPinvPermutation(mg.RconcatL());
+
+                //textoutput += mg.GetMsgAsText();
+                textoutput += mg.GetMsgAsHexString();
+                hexoutput += mg.GetMsgAsHexString()+" ";
+            }
+
+            Console.WriteLine("\nEncrypted Hex output is:\n"+hexoutput+"|");
+            //MessageBox.Show("HEX output:\n"+hexoutput);
+            //Console.WriteLine("\nEncrypted Text output:\n"+textoutput+"|");
+
+            return textoutput;
+        }
+
+        public string RunEncrypt(string key, string msg)
+        {   // use this encryption ONLY if the string is in HEX
+            // else use the Constuctor and the RunEncrypt() methods above
             string output = "";
+
+            kg = new KeyGenerators(key);
+            f = new Functions();
+
             bool[] fcn;     // result for the f function
             bool[] lXORfcn; // temporary storage for the Lside and Rside swap
 
-            for (int i=0; i<=15; i++)
+            msg = Helper.AddPaddingToMsg(msg, 16, "0");
+            List<string> msgPart = Helper.SplitMsgBySize(msg, 16);
+
+            for (int i = 0; i < msgPart.Count; i++)
             {
-                fcn = f.fFunction (mg.GetRight(), kg.GetKKeyNumber(i+1) );
-                lXORfcn = mg.L_XOR_f( fcn );
-                mg.SetLeft( mg.GetRight() );
-                mg.SetRight( lXORfcn );
+                mg = new MsgGenerator(msgPart[i]);
+
+                for (int j = 0; j <= 15; j++)
+                {
+                    fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(j + 1));
+                    lXORfcn = mg.L_XOR_f(fcn);
+                    mg.SetLeft(mg.GetRight());
+                    mg.SetRight(lXORfcn);
+                }
+
+                mg.IPinvPermutation(this.mg.RconcatL());
+                output += mg.GetMsgAsHexString();
             }
 
-            mg.IPinvPermutation(mg.RconcatL());
-
-            output += mg.GetMsgAsText();
-            Console.WriteLine("\nEncrypted Hex output is:\n"+output);
-
-            return output;
+                return output;
         }
+
 
         public string RunDecrypt()
         {
             string output = "";
-            bool[] fcn;     // result for the f function
-            bool[] lXORfcn; // temporary storage for the Lside and Rside swap
+            string hexoutput = "";
 
-            for (int i = 0; i <= 15; i++)
-            {
-                fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(16-i));
-                lXORfcn = mg.L_XOR_f(fcn);
-                mg.SetLeft(mg.GetRight());
-                mg.SetRight(lXORfcn);
+            for (int i=0; i < msgPart.Count; i ++) {
+
+                mg = new MsgGenerator(msgPart[i]);
+
+                bool[] fcn;     // result for the f function
+                bool[] lXORfcn; // temporary storage for the Lside and Rside swap
+
+                for (int j = 0; j <= 15; j++)
+                {
+                    fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(16 - j));
+                    lXORfcn = mg.L_XOR_f(fcn);
+                    mg.SetLeft(mg.GetRight());
+                    mg.SetRight(lXORfcn);
+                }
+
+                mg.IPinvPermutation(mg.RconcatL());
+
+                hexoutput += mg.GetMsgAsHexString() + " ";
+                //output += mg.GetMsgAsText();
+                output += mg.GetMsgAsHexString();
             }
 
-            mg.IPinvPermutation(mg.RconcatL());
-
-            output += mg.GetMsgAsText();
-            Console.WriteLine("\nDecrypted Hex output is:\n" + output);
+            Console.WriteLine("\n\nDecrypted HEX output id:\n"+hexoutput);
+            Console.WriteLine("\nDecrypted TEXT output is:\n" + output);
 
             return output;
         }

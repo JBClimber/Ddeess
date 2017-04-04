@@ -16,6 +16,7 @@ namespace ConsoleTestDES.DESCode
 
         public KeyGenerators(string key)
         {
+            //Console.WriteLine("key in HEX: "+key);
             this.bitKey64 = ByteKeyToBitKey (HexStringToByteArray(key) );
             this.bitKey56 = BitKey64ToBitKey56(this.bitKey64);
             this.cdKeys = CreateCDKeys(this.bitKey56);
@@ -37,7 +38,7 @@ namespace ConsoleTestDES.DESCode
 
         public byte[] HexStringToByteArray(string hex)
         {
-            Console.WriteLine("Converting to byte array ...");
+            //Console.WriteLine("Converting to byte array ...");
             return Enumerable.Range(0, hex.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(hex.Substring(x, 2), 16)).ToArray();
         }
 
@@ -53,7 +54,7 @@ namespace ConsoleTestDES.DESCode
                     ki++;
                 }
             }
-            Console.WriteLine("\n64-bit key:\n" + Helper.PrintBitArray(toBitKey, 8));
+            //Console.WriteLine("\n64-bit key:\n" + Helper.PrintBitArray(toBitKey, 8));
             return toBitKey;
         }
 
@@ -66,7 +67,7 @@ namespace ConsoleTestDES.DESCode
                 bool temp = bitKey[i];
                 bit56.Set(i, bitKey.Get(Boxes.PC1[i] - 1)); // pc1 index 1 through 64 hence PC1 - 1
             }
-            Console.WriteLine("\n56 bit Key:\n" + Helper.PrintBitArray(bit56, 7));
+            //Console.WriteLine("\n56 bit Key:\n" + Helper.PrintBitArray(bit56, 7));
             return bit56;
         }
 
@@ -141,6 +142,7 @@ namespace ConsoleTestDES.DESCode
                 }
                 k[i] = temp;
             }
+
             Console.WriteLine("\nK keys:\n" + Helper.PrintCorDKeys(k, 6));
             return k;
         }

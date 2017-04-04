@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ConsoleTestDES.DESCode
@@ -12,21 +13,42 @@ namespace ConsoleTestDES.DESCode
 
         public static string ToHexString(string s)
         {   // converts text to HEX string
-            Console.WriteLine("");
+            
             char[] chars = s.ToCharArray();
             StringBuilder sb = new StringBuilder();
             foreach (char c in chars)
             {
-                sb.Append(((Int16)c).ToString("x"));
+                string hexoutput = String.Format("{0:X2}", Convert.ToInt16(c));
+                sb.Append(hexoutput);
             }
-            Console.WriteLine("key in HEX: " + sb.ToString());
+
+            /*StringBuilder sb = new StringBuilder();
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(s);
+
+            foreach (byte b in inputBytes)
+
+            {
+
+                sb.Append(string.Format("{0:x2}", b));
+
+            }
+            */
+            //Console.WriteLine("in HEX: " + sb.ToString());
             return sb.ToString();
         }
 
         public static byte[] HexStringToByteArray(string hex)
         {
-            Console.WriteLine("Converting to byte array ...");
-            return Enumerable.Range(0, hex.Length).Where(x => x % 2 == 0).Select(x => Convert.ToByte(hex.Substring(x, 2), 16)).ToArray();
+            //Console.WriteLine("Converting hexString to byte array ...");
+
+            byte[] hexBytes = new byte[hex.Length / 2];
+            for (int i = 0; i < hex.Length; i += 2)
+            {
+                string p = hex.Substring(i, 2);
+                hexBytes[i / 2] = Convert.ToByte(p, 16);
+            }
+            return hexBytes;
         }
 
         public static BitArray ByteArrayToBitArray(byte[] key)
@@ -138,6 +160,34 @@ namespace ConsoleTestDES.DESCode
             }
 
             return b;
+        }
+
+        public static string AddPaddingToMsg(string m, int padLength, string pl)
+        {   // pads the msg with space(s) so it is multiple of 16 characters
+            while (m.Length % padLength != 0)
+            {
+                m = m + pl;
+            }
+
+            //Console.WriteLine("\nPadded msg:\n|"+m+"|");
+            return m;
+        }
+
+        public static List<string> SplitMsgBySize(string m, int size)
+        {
+            List<string> l = new List<string>();
+
+            for (int i=0; i<m.Length; i = i + size)
+            {
+                l.Add(m.Substring(i, size));
+            }
+
+            return l;
+        }
+
+        public static Boolean IsHexString(string h)
+        {
+            return Regex.IsMatch(h, @"\A\b[0-9a-fA-F]+\b\Z");
         }
     }
 }

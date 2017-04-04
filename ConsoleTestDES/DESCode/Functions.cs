@@ -37,7 +37,8 @@ namespace ConsoleTestDES.DESCode
             {
                 exp[i] = r[Boxes.E[i] -1 ];     // E has 1- 48 array is 0-47 hence E-1
             }
-            Console.WriteLine("\nE(r):\n"+Helper.printBoolArray(exp, 6));
+
+            //Console.WriteLine("\nE(r):\n"+Helper.printBoolArray(exp, 6));
             return exp;
         }
 
@@ -50,7 +51,8 @@ namespace ConsoleTestDES.DESCode
             {
                 xor[i] = eri[i] ^ key[i];
             }
-            Console.WriteLine("\nFunction E(R) XOR Ki:\n" + Helper.printBoolArray(xor, 6));
+
+            //Console.WriteLine("\nFunction E(R) XOR Ki:\n" + Helper.printBoolArray(xor, 6));
             return xor;
         }
 
@@ -71,7 +73,7 @@ namespace ConsoleTestDES.DESCode
                 cIndex += 4;
             }
 
-            Console.WriteLine("\nFunction SBoxes:\n"+Helper.printBoolArray(c, 4));
+            //Console.WriteLine("\nFunction SBoxes:\n"+Helper.printBoolArray(c, 4));
             return c;
         }
 
@@ -80,7 +82,7 @@ namespace ConsoleTestDES.DESCode
             // f and a create row number  0 -> 3
             // e, d, c, b create column number 0->15
             //  row and column get number form the SBox
-
+            //Console.Write(boxNum);
             int row = 0;
             if (a)
             {
@@ -139,7 +141,7 @@ namespace ConsoleTestDES.DESCode
                 p[i] = sBoxOut[Boxes.P[i] - 1];     // P index 1->32 sBoxOut 0->31 hence Boxes.P[i] - 1
             }
 
-            Console.WriteLine("\nFunction Permutation:\n"+Helper.printBoolArray(p, 4));
+            //Console.WriteLine("\nFunction Permutation:\n"+Helper.printBoolArray(p, 4));
             return p;
         }
     }
