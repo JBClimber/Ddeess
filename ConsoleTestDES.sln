@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDES", "TestDES\TestDES.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFdes", "BFdes\BFdes.csproj", "{4393CF3E-491B-48CC-A9CD-5C80E3D4E34C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestDESkeys", "ConsoleTestDESkeys\ConsoleTestDESkeys.csproj", "{AC1751C3-6FF4-44B4-A1DD-EDD902E12BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DESkeyTest", "DESkeyTest\DESkeyTest.csproj", "{47CCF534-A5B4-4B4C-A856-814AE57D3B76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{4393CF3E-491B-48CC-A9CD-5C80E3D4E34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4393CF3E-491B-48CC-A9CD-5C80E3D4E34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4393CF3E-491B-48CC-A9CD-5C80E3D4E34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC1751C3-6FF4-44B4-A1DD-EDD902E12BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC1751C3-6FF4-44B4-A1DD-EDD902E12BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC1751C3-6FF4-44B4-A1DD-EDD902E12BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC1751C3-6FF4-44B4-A1DD-EDD902E12BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47CCF534-A5B4-4B4C-A856-814AE57D3B76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47CCF534-A5B4-4B4C-A856-814AE57D3B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47CCF534-A5B4-4B4C-A856-814AE57D3B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47CCF534-A5B4-4B4C-A856-814AE57D3B76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

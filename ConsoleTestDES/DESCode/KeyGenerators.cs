@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleTestDES.DESCode
 {
-    class KeyGenerators
+    public class KeyGenerators
     {
         private BitArray bitKey64;
         private BitArray bitKey56;
@@ -20,6 +20,12 @@ namespace ConsoleTestDES.DESCode
             this.bitKey64 = ByteKeyToBitKey (HexStringToByteArray(key) );
             this.bitKey56 = BitKey64ToBitKey56(this.bitKey64);
             this.cdKeys = CreateCDKeys(this.bitKey56);
+            this.kKeys = CreateKKeys(this.cdKeys);
+        }
+
+        public KeyGenerators(BitArray bitArrayKey56)
+        {
+            this.cdKeys = CreateCDKeys(bitArrayKey56);
             this.kKeys = CreateKKeys(this.cdKeys);
         }
 

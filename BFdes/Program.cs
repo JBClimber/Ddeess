@@ -10,6 +10,14 @@ namespace BFdes
 {
     class Program
     {
+        /*       program not complete
+         * 
+         * 
+         * 
+         * 
+         */
+
+
         static void Main(string[] args)
         {
             Console.WriteLine(" - - - - - BFdes started - - - - -\r\n");
