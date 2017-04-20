@@ -13,17 +13,18 @@ namespace DESkeyTest
     {
         static void Main(string[] args)
         {
-            StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_2_diff_K_keys.txt");
+            StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_4_diff_K_keysRIGHT.txt");
 
             Stopwatch t = new Stopwatch();
             t.Start();
 
-            string allHexKeys = "";
+            string binString = "";
 
+            // rigth side of CD keys
             for (int i=0; i< 268435455; i++) {
 
                 Console.WriteLine(i);
-                string binString = IntToBinaryStringRightSide(i);
+                binString = IntToBinaryStringRightSide(i);
                 bool[] keys = BinaryStringToBoolArray(binString);
                 //Console.WriteLine(keys[i].Length);
                 bool[][] key = CreateCDKeys(keys);
@@ -32,7 +33,7 @@ namespace DESkeyTest
                 bool[][] keyCopy = CreateKKeys(key);
 
                 // check for number of same keys in k
-                if (FindSameKKeys(keyWork, 2))
+                if (FindSameKKeysRight(keyWork, 4))
                 {
                     //PrintBoolArray(keys[i]);
                     //Console.WriteLine(Convert.ToInt64(binString[i], 2));
@@ -58,23 +59,67 @@ namespace DESkeyTest
                     write.WriteLine("K keys: \n" + k);
 
                     write.Flush();
-                    //allHexKeys += "Hex KEY: " + BinaryStringToHexString(rec) + "\n";
-                    //Console.WriteLine("Hex KEY: "+BinaryStringToHexString(rec));
+
                 }
             }
-            //Console.WriteLine(allHexKeys);
-            /*string[] bs = new string[] {"11110000110011001010101011110101010101100110011110001111" };
-            Console.WriteLine(bs[0]);
-            bool[][] sb = BinaryStringsToBoolArray(bs);
-
-
-            bool[] n = RecoverKey(sb[0]);
-            string b = BoolArrayToBinaryString(n);
-            Console.WriteLine(b);
-            Console.WriteLine(BinaryStringToHexString(b));*/
-
             t.Stop();
             TimeSpan ts = t.Elapsed;
+            Console.WriteLine(ToStringElapsedTime(ts));
+            write.WriteLine(ToStringElapsedTime(ts));
+            write.Flush();
+            write.Close();
+
+
+            write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_4_diff_K_keysLEFT.txt");
+
+            t = new Stopwatch();
+            t.Start();
+
+            // left side of the CD Keys
+
+            for (int i = 0; i < 268435455; i++)
+            {
+                binString = InToBinaryStringLeftSide(i);
+                bool[] keys = BinaryStringToBoolArray(binString);
+
+                bool[][] key = CreateCDKeys(keys);
+
+                bool[][] keyWork = CreateKKeys(key);
+                bool[][] keyCopy = CreateKKeys(key);
+
+                if (FindSameKKeysLeft(keyWork, 4))
+                {
+                    //PrintBoolArray(keys[i]);
+                    //Console.WriteLine(Convert.ToInt64(binString[i], 2));
+                    bool[] recovered = RecoverKey(keys);
+
+                    string k = ToStringBoolArray(recovered, 8);
+
+                    Console.WriteLine("64bit key: " + k);
+                    write.WriteLine("64bit key: " + k);
+
+                    Console.WriteLine("56bit right side: " + binString);
+                    write.WriteLine("56bit right side: " + binString);
+
+                    Console.WriteLine("key: " + k + "\r\nno: " + i);
+                    write.WriteLine("key: " + k);
+
+                    k = ToStringBoolArrayOfArrays(key, 7);
+                    Console.WriteLine("CD keys: \n" + k);
+                    write.WriteLine("CD keys: \n" + k);
+
+                    k = ToStringBoolArrayOfArrays(keyCopy, 6);
+                    Console.WriteLine("K keys: \n" + k);
+                    write.WriteLine("K keys: \n" + k);
+
+                    write.Flush();
+
+                }
+            }
+
+
+            t.Stop();
+            ts = t.Elapsed;
             Console.WriteLine(ToStringElapsedTime(ts));
             write.WriteLine(ToStringElapsedTime(ts));
             write.Flush();
@@ -87,14 +132,30 @@ namespace DESkeyTest
         }
 
         public static string IntToBinaryStringRightSide(int n)
-        {   // converts integer to 56 bit binary string
-
+        {   // converts integer to 56 bit binary string rigth side
                 string num = Convert.ToString(n, 2);
 
                 while (num.Length < 56)
                 {
                     num = "0" + num;
                 }
+
+            return num;
+        }
+
+        public static string InToBinaryStringLeftSide(int n)
+        {   // converts integer to 56 bit binary string left side
+            string num = Convert.ToString(n, 2);
+
+            while (num.Length < 28)
+            {
+                num = "0" + num;
+            }
+
+            while (num.Length < 56)
+            {
+                num += "0";
+            }
 
             return num;
         }
@@ -173,7 +234,7 @@ namespace DESkeyTest
             return k;
         }
 
-        public static bool FindSameKKeys(bool[][] kKeys, int distKeys)
+        public static bool FindSameKKeysRight(bool[][] kKeys, int distKeys)
         {   // limit of number of the same keys
 
             string result = "";
@@ -211,6 +272,54 @@ namespace DESkeyTest
                 }
                 distinctKeys = distinctKeys - same;
                 
+                kKeys[i] = null;
+            }
+
+            if (distinctKeys != distKeys)
+            {
+                return false;
+            }
+            //Console.WriteLine(result);
+            return true;
+        }
+
+        public static bool FindSameKKeysLeft(bool[][] kKeys, int distKeys)
+        {
+            string result = "";
+            int distinctKeys = 16;
+
+            for (int i = 1; i < kKeys.Length; i++)
+            {
+                int same = 0;
+                if (kKeys[i] != null)
+                {
+                    for (int j = i + 1; j < kKeys.Length; j++)
+                    {
+                        if (kKeys[j] != null)
+                        {
+                            int count = 0;
+                            for (int k = 0; k < 24; k++)
+                            {
+                                if (kKeys[i][k] ^ kKeys[j][k] == false)
+                                {
+                                    count++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            if (count == 24)
+                            {
+                                result += i + "," + j + "  ";
+                                kKeys[j] = null;
+                                same++;
+                            }
+                        }
+                    }
+                }
+                distinctKeys = distinctKeys - same;
+
                 kKeys[i] = null;
             }
 
