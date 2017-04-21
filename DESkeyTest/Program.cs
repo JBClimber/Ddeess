@@ -13,117 +13,126 @@ namespace DESkeyTest
     {
         static void Main(string[] args)
         {
-            StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_4_diff_K_keysRIGHT.txt");
+            for (int j=6; j<=15; j++) {
+                Console.WriteLine("working on "+j+" RIGHT ...");
+                StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_"+j+"_diff_K_keysRIGHT.txt");
 
-            Stopwatch t = new Stopwatch();
-            t.Start();
+                Stopwatch t = new Stopwatch();
+                t.Start();
 
-            string binString = "";
+                string binString = "";
 
-            // rigth side of CD keys
-            for (int i=0; i< 268435455; i++) {
+                // rigth side of CD keys
+                for (int i = 0; i < 268435455; i++) {
 
-                Console.WriteLine(i);
-                binString = IntToBinaryStringRightSide(i);
-                bool[] keys = BinaryStringToBoolArray(binString);
-                //Console.WriteLine(keys[i].Length);
-                bool[][] key = CreateCDKeys(keys);
+                    //if (i%1000000==0)
+                    //{
+                    //    Console.WriteLine(i);
+                    //}
 
-                bool[][] keyWork = CreateKKeys(key);
-                bool[][] keyCopy = CreateKKeys(key);
+                    binString = IntToBinaryStringRightSide(i);
+                    bool[] keys = BinaryStringToBoolArray(binString);
+                    //Console.WriteLine(keys[i].Length);
+                    bool[][] key = CreateCDKeys(keys);
 
-                // check for number of same keys in k
-                if (FindSameKKeysRight(keyWork, 4))
-                {
-                    //PrintBoolArray(keys[i]);
-                    //Console.WriteLine(Convert.ToInt64(binString[i], 2));
-                    bool[] recovered = RecoverKey(keys);
+                    bool[][] keyWork = CreateKKeys(key);
+                    bool[][] keyCopy = CreateKKeys(key);
 
-                    string k = ToStringBoolArray(recovered, 8);
+                    // check for number of same keys in k
+                    if (FindSameKKeysRight(keyWork, j))
+                    {
+                        //PrintBoolArray(keys[i]);
+                        //Console.WriteLine(Convert.ToInt64(binString[i], 2));
+                        bool[] recovered = RecoverKey(keys);
 
-                    Console.WriteLine("64bit key: "+k);
-                    write.WriteLine("64bit key: " + k);
+                        string k = ToStringBoolArray(recovered, 8);
 
-                    Console.WriteLine("56bit right side: "+binString);
-                    write.WriteLine("56bit right side: "+binString);
+                        Console.WriteLine("64bit key: " + k);
+                        write.WriteLine("64bit key: " + k);
 
-                    Console.WriteLine("key: "+k+"\r\nno: "+i);
-                    write.WriteLine("key: " + k);
+                        Console.WriteLine("56bit right side: " + binString);
+                        write.WriteLine("56bit right side: " + binString);
 
-                    k = ToStringBoolArrayOfArrays(key, 7);
-                    Console.WriteLine("CD keys: \n" + k);
-                    write.WriteLine("CD keys: \n" + k);
+                        Console.WriteLine("key: " + k + "\r\nno: " + i);
+                        write.WriteLine("key: " + k);
 
-                    k = ToStringBoolArrayOfArrays(keyCopy, 6);
-                    Console.WriteLine("K keys: \n"+k);
-                    write.WriteLine("K keys: \n" + k);
+                        k = ToStringBoolArrayOfArrays(key, 7);
+                        Console.WriteLine("CD keys: \n" + k);
+                        write.WriteLine("CD keys: \n" + k);
 
-                    write.Flush();
+                        k = ToStringBoolArrayOfArrays(keyCopy, 6);
+                        Console.WriteLine("K keys: \n" + k);
+                        write.WriteLine("K keys: \n" + k);
 
+                        write.Flush();
+
+                    }
                 }
-            }
-            t.Stop();
-            TimeSpan ts = t.Elapsed;
-            Console.WriteLine(ToStringElapsedTime(ts));
-            write.WriteLine(ToStringElapsedTime(ts));
-            write.Flush();
-            write.Close();
+                t.Stop();
+                TimeSpan ts = t.Elapsed;
+                Console.WriteLine(ToStringElapsedTime(ts));
+                write.WriteLine(ToStringElapsedTime(ts));
+                write.Flush();
+                write.Close();
 
 
-            write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_4_diff_K_keysLEFT.txt");
+                write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_"+j+"_diff_K_keysLEFT.txt");
 
-            t = new Stopwatch();
-            t.Start();
+                t = new Stopwatch();
+                t.Start();
 
-            // left side of the CD Keys
+                Console.WriteLine("working on "+j+" LEFT ...");
+                // left side of the CD Keys
 
-            for (int i = 0; i < 268435455; i++)
-            {
-                binString = InToBinaryStringLeftSide(i);
-                bool[] keys = BinaryStringToBoolArray(binString);
-
-                bool[][] key = CreateCDKeys(keys);
-
-                bool[][] keyWork = CreateKKeys(key);
-                bool[][] keyCopy = CreateKKeys(key);
-
-                if (FindSameKKeysLeft(keyWork, 4))
+                for (int i = 0; i < 268435455; i++)
                 {
-                    //PrintBoolArray(keys[i]);
-                    //Console.WriteLine(Convert.ToInt64(binString[i], 2));
-                    bool[] recovered = RecoverKey(keys);
+                    binString = InToBinaryStringLeftSide(i);
+                    bool[] keys = BinaryStringToBoolArray(binString);
 
-                    string k = ToStringBoolArray(recovered, 8);
+                    bool[][] key = CreateCDKeys(keys);
 
-                    Console.WriteLine("64bit key: " + k);
-                    write.WriteLine("64bit key: " + k);
+                    bool[][] keyWork = CreateKKeys(key);
+                    bool[][] keyCopy = CreateKKeys(key);
 
-                    Console.WriteLine("56bit right side: " + binString);
-                    write.WriteLine("56bit right side: " + binString);
+                    if (FindSameKKeysLeft(keyWork, j))
+                    {
+                        //PrintBoolArray(keys[i]);
+                        //Console.WriteLine(Convert.ToInt64(binString[i], 2));
+                        bool[] recovered = RecoverKey(keys);
 
-                    Console.WriteLine("key: " + k + "\r\nno: " + i);
-                    write.WriteLine("key: " + k);
+                        string k = ToStringBoolArray(recovered, 8);
 
-                    k = ToStringBoolArrayOfArrays(key, 7);
-                    Console.WriteLine("CD keys: \n" + k);
-                    write.WriteLine("CD keys: \n" + k);
+                        Console.WriteLine("64bit key: " + k);
+                        write.WriteLine("64bit key: " + k);
 
-                    k = ToStringBoolArrayOfArrays(keyCopy, 6);
-                    Console.WriteLine("K keys: \n" + k);
-                    write.WriteLine("K keys: \n" + k);
+                        Console.WriteLine("56bit right side: " + binString);
+                        write.WriteLine("56bit right side: " + binString);
 
-                    write.Flush();
+                        Console.WriteLine("key: " + k + "\r\nno: " + i);
+                        write.WriteLine("key: " + k);
 
+                        k = ToStringBoolArrayOfArrays(key, 7);
+                        Console.WriteLine("CD keys: \n" + k);
+                        write.WriteLine("CD keys: \n" + k);
+
+                        k = ToStringBoolArrayOfArrays(keyCopy, 6);
+                        Console.WriteLine("K keys: \n" + k);
+                        write.WriteLine("K keys: \n" + k);
+
+                        write.Flush();
+
+                    }
                 }
+
+
+                t.Stop();
+                ts = t.Elapsed;
+                Console.WriteLine(ToStringElapsedTime(ts));
+                write.WriteLine(ToStringElapsedTime(ts));
+                write.Flush();
+                write.Close();
+
             }
-
-
-            t.Stop();
-            ts = t.Elapsed;
-            Console.WriteLine(ToStringElapsedTime(ts));
-            write.WriteLine(ToStringElapsedTime(ts));
-            write.Flush();
-            write.Close();
 
 
             Console.WriteLine(" - - - TEST COMPLETE - - -");
