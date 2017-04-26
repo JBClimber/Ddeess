@@ -57,22 +57,32 @@ namespace ConsoleTestDES.DESCode
             string hexoutput = "";
             string textoutput = "";
 
-            for (int i=0; i<msgPart.Count; i++) {
-
+            for (int i=0; i<msgPart.Count; i++)      // loop for msg
+            {
                 mg = new MsgGenerator(msgPart[i]);
 
                 bool[] fcn;     // result for the f function
                 bool[] lXORfcn; // temporary storage for the Lside and Rside swap
 
-                for (int j = 0; j <= 15; j++)
+                for (int j = 0; j <= 15; j++)       // loop for rounds
                 {
+                    Console.Write("L" + j + ": " + PrintBoolArray(mg.GetLeft()));
+                    Console.WriteLine("   R" + j + ": " + PrintBoolArray(mg.GetRight()));
+
                     fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(j + 1));
+                    Console.WriteLine("fcn: " + PrintBoolArray(fcn));
+
                     lXORfcn = mg.L_XOR_f(fcn);
                     mg.SetLeft(mg.GetRight());
                     mg.SetRight(lXORfcn);
                 }
 
+                Console.Write("L16: " + PrintBoolArray(mg.GetLeft()));
+                Console.WriteLine("   R16: " + PrintBoolArray(mg.GetRight()));
+
                 mg.IPinvPermutation(mg.RconcatL());
+
+                Console.WriteLine("msg: "+Helper.printBoolArray(mg.GetMsg(), 8));
 
                 //textoutput += mg.GetMsgAsText();
                 textoutput += mg.GetMsgAsHexString();
@@ -100,13 +110,18 @@ namespace ConsoleTestDES.DESCode
             msg = Helper.AddPaddingToMsg(msg, 16, "0");
             List<string> msgPart = Helper.SplitMsgBySize(msg, 16);
 
-            for (int i = 0; i < msgPart.Count; i++)
+            for (int i = 0; i < msgPart.Count; i++)     // loop for msg
             {
                 mg = new MsgGenerator(msgPart[i]);
 
-                for (int j = 0; j <= 15; j++)
+                for (int j = 0; j <= 15; j++)       // loop for rounds
                 {
+                    Console.Write("L"+j+": "+PrintBoolArray(mg.GetLeft()));
+                    Console.WriteLine("   R"+j+": "+ PrintBoolArray(mg.GetRight()));
+
                     fcn = f.fFunction(mg.GetRight(), kg.GetKKeyNumber(j + 1));
+                    Console.WriteLine("fcn: "+PrintBoolArray(fcn));
+
                     lXORfcn = mg.L_XOR_f(fcn);
                     mg.SetLeft(mg.GetRight());
                     mg.SetRight(lXORfcn);
@@ -153,6 +168,25 @@ namespace ConsoleTestDES.DESCode
             return output;
         }
 
+        public static string PrintBoolArray(bool[] fcn)
+        {
+            string binFCN = "";
+
+            for (int i=0; i<fcn.Length; i++)
+            {
+                if (fcn[i] == true)
+                {
+                    binFCN += "1";
+                }
+                else
+                {
+                    binFCN += "0";
+                }
+            }
+            return binFCN;
+        }
+
+        // old code not required
         //public string GetStringKey()
         //{
         //    return Encoding.ASCII.GetString(this.key);

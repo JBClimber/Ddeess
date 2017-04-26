@@ -150,6 +150,11 @@ namespace ConsoleTestDES.DESCode
             return this.right;
         }
 
+        public bool[] GetMsg()
+        {   // gets current 64 bit msg
+            return this.msg;
+        }
+
         public void SetLeft(bool[] left)
         {
             this.left = left;
@@ -179,47 +184,6 @@ namespace ConsoleTestDES.DESCode
 
         public string HexToText(string h)
         {   // converts hex string to text (ascii)string
-
-            /*string s = "";
-
-            for (int i=0; i<h.Length; i = i+2)
-            {
-                s += Convert.ToChar(Convert.ToUInt32(h.Substring(i, 2), 16));
-            }
-
-            return s;
-
-
-            /*byte[] tmp;
-            int j = 0;
-            tmp = new byte[(h.Length) / 2];
-            for (int i = 0; i <= h.Length- 2; i += 2)
-            {
-                tmp[j] = (byte)Convert.ToChar(Int32.Parse(h.Substring(i, 2), System.Globalization.NumberStyles.HexNumber));
-
-                j++;
-            }
-            return Encoding.GetEncoding(1252).GetString(tmp);*/
-
-            /*string res = String.Empty;
-
-            for (int a = 0; a < h.Length; a = a + 2)
-
-            {
-
-                string Char2Convert = h.Substring(a, 2);
-
-                int n = Convert.ToInt32(Char2Convert, 16);
-
-                char c = (char)n;
-
-                //Console.WriteLine("int:"+n+"  -->  "+c);
-
-                res += c.ToString();
-
-            }
-
-            return res;*/
 
             try
             {

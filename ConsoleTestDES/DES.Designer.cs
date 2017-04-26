@@ -34,18 +34,16 @@
             this.textMsg = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuFileDecrypt = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuFileClose = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuType = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTypeTripleSingle = new System.Windows.Forms.ToolStripMenuItem();
             this.textEncDec = new System.Windows.Forms.TextBox();
             this.labelMsg = new System.Windows.Forms.Label();
             this.labelEncDec = new System.Windows.Forms.Label();
             this.btEncDec = new System.Windows.Forms.Button();
             this.errorKey = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorMsg = new System.Windows.Forms.ErrorProvider(this.components);
-            this.menuFileDecrypt = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorKey)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorMsg)).BeginInit();
@@ -86,8 +84,7 @@
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuFile,
-            this.menuType});
+            this.menuFile});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(551, 24);
@@ -105,6 +102,13 @@
             this.menuFile.Size = new System.Drawing.Size(37, 20);
             this.menuFile.Text = "File";
             // 
+            // menuFileDecrypt
+            // 
+            this.menuFileDecrypt.Name = "menuFileDecrypt";
+            this.menuFileDecrypt.Size = new System.Drawing.Size(152, 22);
+            this.menuFileDecrypt.Text = "Decrypt";
+            this.menuFileDecrypt.Click += new System.EventHandler(this.menuFileDecrypt_Click);
+            // 
             // menuFileReset
             // 
             this.menuFileReset.Name = "menuFileReset";
@@ -112,27 +116,17 @@
             this.menuFileReset.Text = "Reset";
             this.menuFileReset.Click += new System.EventHandler(this.menuFileReset_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            // 
             // menuFileClose
             // 
             this.menuFileClose.Name = "menuFileClose";
             this.menuFileClose.Size = new System.Drawing.Size(152, 22);
             this.menuFileClose.Text = "Close";
             this.menuFileClose.Click += new System.EventHandler(this.menuFileClose_Click);
-            // 
-            // menuType
-            // 
-            this.menuType.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuTypeTripleSingle});
-            this.menuType.Name = "menuType";
-            this.menuType.Size = new System.Drawing.Size(45, 20);
-            this.menuType.Text = "Type";
-            // 
-            // menuTypeTripleSingle
-            // 
-            this.menuTypeTripleSingle.Name = "menuTypeTripleSingle";
-            this.menuTypeTripleSingle.Size = new System.Drawing.Size(104, 22);
-            this.menuTypeTripleSingle.Text = "Triple";
-            this.menuTypeTripleSingle.Click += new System.EventHandler(this.menuTypeTripleSingle_Click);
             // 
             // textEncDec
             // 
@@ -184,18 +178,6 @@
             // 
             this.errorMsg.ContainerControl = this;
             // 
-            // menuFileDecrypt
-            // 
-            this.menuFileDecrypt.Name = "menuFileDecrypt";
-            this.menuFileDecrypt.Size = new System.Drawing.Size(152, 22);
-            this.menuFileDecrypt.Text = "Decrypt";
-            this.menuFileDecrypt.Click += new System.EventHandler(this.menuFileDecrypt_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
-            // 
             // DES
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,8 +211,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem menuFileClose;
-        private System.Windows.Forms.ToolStripMenuItem menuType;
-        private System.Windows.Forms.ToolStripMenuItem menuTypeTripleSingle;
         private System.Windows.Forms.TextBox textEncDec;
         private System.Windows.Forms.Label labelMsg;
         private System.Windows.Forms.Label labelEncDec;

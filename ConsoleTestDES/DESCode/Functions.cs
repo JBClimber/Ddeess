@@ -13,19 +13,27 @@ namespace ConsoleTestDES.DESCode
 
         public bool[] fFunction(bool[] ri, bool[] key)
         {   // complete f function
+            Console.WriteLine(" - - - F function - - - ");
             // step 1: expander
             e = Expander(ri);
 
+            Console.WriteLine("          E: "+Helper.printBoolArray(e, 6));
+            Console.WriteLine("          K: " + Helper.printBoolArray(key, 6));
+
             // step 2: expanded msg XOR key
             e = ERi_XOR_Ki(e, key);
+            Console.WriteLine("   E xor Ki: "+Helper.printBoolArray(e, 6));
 
             // step 3: pass msg through S-Boxes
             e = SBoxesFunction(e);
+            Console.WriteLine("     sBoxes: "+Helper.printBoolArray(e, 4));
 
             // step 4: permutaion of the msg
             e = PermutationSboxOutput(e);
+            Console.WriteLine("Permutation: "+Helper.printBoolArray(e, 4));
 
             // f function complete
+            Console.WriteLine(" - - - - - - - - - - - - ");
             return e;
         }
 
