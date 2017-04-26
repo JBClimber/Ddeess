@@ -98,8 +98,8 @@ namespace DESkeyTest
                     Console.WriteLine("64bit key: " + k);
                     write.WriteLine("64bit key: " + k);
 
-                    Console.WriteLine("56bit right side: " + binString);
-                    write.WriteLine("56bit right side: " + binString);
+                    Console.WriteLine("56bit left side: " + binString);
+                    write.WriteLine("56bit left side: " + binString);
 
                     Console.WriteLine("key: " + k + "\r\nno: " + i);
                     write.WriteLine("key: " + k);
