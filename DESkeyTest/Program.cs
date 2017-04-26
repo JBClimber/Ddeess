@@ -26,11 +26,6 @@ namespace DESkeyTest
                 // rigth side of CD keys
                 for (int i = 0; i <= 268435455; i++) {
 
-                    //if (i%1000000==0)
-                    //{
-                    //    Console.WriteLine(i);
-                    //}
-
                     binString = IntToBinaryStringRightSide(i);
                     bool[] keys = BinaryStringToBoolArray(binString);
                     //Console.WriteLine(keys[i].Length);
