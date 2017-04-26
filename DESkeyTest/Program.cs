@@ -24,7 +24,7 @@ namespace DESkeyTest
                 string binString = "";
 
                 // rigth side of CD keys
-                for (int i = 0; i < 268435455; i++) {
+                for (int i = 0; i <= 268435455; i++) {
 
                     //if (i%1000000==0)
                     //{
@@ -85,7 +85,7 @@ namespace DESkeyTest
                 Console.WriteLine("working on "+j+" LEFT ...");
                 // left side of the CD Keys
 
-                for (int i = 0; i < 268435455; i++)
+                for (int i = 0; i <= 268435455; i++)
                 {
                     binString = InToBinaryStringLeftSide(i);
                     bool[] keys = BinaryStringToBoolArray(binString);

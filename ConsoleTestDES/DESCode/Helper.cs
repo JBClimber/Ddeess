@@ -22,19 +22,6 @@ namespace ConsoleTestDES.DESCode
                 sb.Append(hexoutput);
             }
 
-            /*StringBuilder sb = new StringBuilder();
-
-            byte[] inputBytes = Encoding.UTF8.GetBytes(s);
-
-            foreach (byte b in inputBytes)
-
-            {
-
-                sb.Append(string.Format("{0:x2}", b));
-
-            }
-            */
-            //Console.WriteLine("in HEX: " + sb.ToString());
             return sb.ToString();
         }
 

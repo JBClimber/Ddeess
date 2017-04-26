@@ -13,7 +13,7 @@ namespace ConsoleTestDES
 {
     public partial class DES : Form
     {
-        private bool triple;    // singel of triple pass DES
+        private bool triple;    // single or triple pass DES (rest of code removed do to time constraints)
         private bool decrypt;
 
         public DES()
@@ -22,7 +22,7 @@ namespace ConsoleTestDES
             FullResetDES();
         }
 
-        private void menuTypeTripleSingle_Click(object sender, EventArgs e)
+        /*private void menuTypeTripleSingle_Click(object sender, EventArgs e)
         {   // clicked menu "Type"
 
             if(menuTypeTripleSingle.Text == "Triple")   // selected Triple DES
@@ -37,7 +37,7 @@ namespace ConsoleTestDES
                 this.Text = "DES";
                 menuTypeTripleSingle.Text = "Triple";
             }
-        }
+        }*/
 
         private void ResetDES()
         {
@@ -52,7 +52,7 @@ namespace ConsoleTestDES
         {
             this.triple = false;
             this.decrypt = false;
-            menuTypeTripleSingle.Text = "Triple";
+            //menuTypeTripleSingle.Text = "Triple";     // used for triple DES. removed do to time constraints
             textKey.Text = "";
             textMsg.Text = "";
             textEncDec.Text = "";
