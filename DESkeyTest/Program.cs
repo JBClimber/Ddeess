@@ -13,7 +13,8 @@ namespace DESkeyTest
     {
         static void Main(string[] args)
         {
-            for (int j=6; j<=15; j++) {
+            for (int j=1; j<16; j++)    // looks for 1 - 15 distinct keys 
+            {
                 Console.WriteLine("working on "+j+" RIGHT ...");
                 StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_"+j+"_diff_K_keysRIGHT.txt");
 
@@ -134,6 +135,7 @@ namespace DESkeyTest
 
             }
 
+            //CountFrequency();
 
             Console.WriteLine(" - - - TEST COMPLETE - - -");
             CompleteBeep();
@@ -150,6 +152,63 @@ namespace DESkeyTest
                 }
 
             return num;
+        }
+
+        public static void CountFrequency()
+        {   // records frequency of LEFT and RIGHT similarities
+
+            Stopwatch t = new Stopwatch();
+            t.Start();
+
+            string binStringLeft = "";
+            string binStringRight = "";
+
+            int[,] freq = new int[17,2];
+
+            for (int j = 0; j < 268435455; j++)
+            {
+                Console.WriteLine("key: "+j);
+                binStringLeft = InToBinaryStringLeftSide(j);
+                binStringRight = IntToBinaryStringRightSide(j);
+
+                bool[] keysL = BinaryStringToBoolArray(binStringLeft);
+                bool[] keysR = BinaryStringToBoolArray(binStringRight);
+
+                bool[][] keyL = CreateCDKeys(keysL);
+                bool[][] keyR = CreateCDKeys(keysR);
+
+                for (int i = 1; i < freq.Length; i++)
+                {
+                    bool[][] keyLeft = CreateKKeys(keyL);
+                    bool[][] keyRight = CreateKKeys(keyR);
+
+                    if (FindSameKKeysLeft(keyLeft, i))
+                    {
+                        freq[i, 0]++;
+                    }
+
+                    if (FindSameKKeysRight(keyRight, i))
+                    {
+                        freq[i, 1]++;
+                    }
+                }
+            }
+
+            StreamWriter write = new StreamWriter(@"d:\ET\BFKeyValidityDES\des_KeyFreqLeftRight.txt");
+
+            for (int i=1; i<freq.Length; i++)
+            {
+                write.WriteLine(i+":"+freq[i,0]+":"+freq[i,1]);
+                write.Flush();
+            }
+
+            t.Stop();
+            TimeSpan ts = t.Elapsed;
+            Console.WriteLine(ToStringElapsedTime(ts));
+            write.WriteLine(ToStringElapsedTime(ts));
+            write.Flush();
+            write.Close();
+
         }
 
         public static string InToBinaryStringLeftSide(int n)
@@ -178,7 +237,7 @@ namespace DESkeyTest
         }
 
         public static bool[][] CreateCDKeys(bool[] key)
-        {
+        {   // creates CD keys. from DES
             bool[][] cdKeys = new bool[17][];
             cdKeys[0] = key;
             //PrintBoolArray(key);
@@ -224,7 +283,7 @@ namespace DESkeyTest
         }
 
         public static bool[][] CreateKKeys(bool[][] cd)
-        {
+        {   // creates K keys . from DES
             bool[][] k = new bool[17][]; // 0 row is not used
             bool[] temp = new bool[48];
             k[0] = temp;
@@ -244,7 +303,7 @@ namespace DESkeyTest
         }
 
         public static bool FindSameKKeysRight(bool[][] kKeys, int distKeys)
-        {   // limit of number of the same keys
+        {   // finds number of distinct keys in the K keys (RIGHT side)
 
             string result = "";
             int distinctKeys = 16;
@@ -293,7 +352,7 @@ namespace DESkeyTest
         }
 
         public static bool FindSameKKeysLeft(bool[][] kKeys, int distKeys)
-        {
+        {   // finds number of distinct keys in the K keys (LEFT side)
             string result = "";
             int distinctKeys = 16;
 
@@ -377,7 +436,7 @@ namespace DESkeyTest
         }
 
         public static string BinaryStringToHexString(string b)
-        {
+        {   // converts binary string to HEX
             string hex = Convert.ToInt64(b, 2).ToString("X");
             while (hex.Length < 16)
             {
@@ -445,8 +504,9 @@ namespace DESkeyTest
             Console.Beep(2000, 250);
             Console.Beep(500, 500);
         }
+
         public static string ToStringElapsedTime(TimeSpan s)
-        {
+        {   // toString of elapsed time
             return ("timed at: " + s.Days + ":" + s.Hours + ":" + s.Minutes + ":" + s.Seconds + "." + s.Milliseconds);
         }
     }
